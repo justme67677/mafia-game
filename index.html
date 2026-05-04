@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#07070f">
     <link rel="manifest" href="manifest.json">
     <style>
         /* هذا الجزء يضمن أن أزرار لعبتك ستكون كبيرة وسهلة اللمس */
@@ -75,10 +77,10 @@ input:focus{border-color:rgba(212,168,67,0.5)}
 .t-btn:active{background:rgba(255,255,255,0.08);transform:scale(0.98)}
 .t-btn.dead-t{opacity:0.3;pointer-events:none;text-decoration:line-through}
 .t-av{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;background:rgba(255,255,255,0.05)}
-.v-row{display:flex;align-items:center;gap:9px;padding:11px;border-radius:12px;background:rgba(255,255,255,0.03);border:0.5px solid var(--border);margin-bottom:6px}
+.v-row{display:flex;align-items:center;gap:9px;padding:11px;border-radius:12px;background:rgba(255,255,255,0.03);border:0.5px solid var(--border);margin-bottom:6px;transition: all 0.2s;}
 .v-num{font-size:21px;font-weight:900;color:var(--gold);width:32px;text-align:center}
 .v-ctrl{display:flex;gap:5px;margin-right:auto}
-.v-b{width:32px;height:32px;border-radius:9px;border:0.5px solid var(--border2);background:rgba(255,255,255,0.05);color:var(--text2);font-size:16px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center}
+.v-b{width:32px;height:32px;border-radius:9px;border:0.5px solid var(--border2);background:rgba(255,255,255,0.05);color:var(--text2);font-size:16px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;transition: all 0.2s;}
 .nr-item{display:flex;align-items:center;gap:10px;padding:10px 13px;border-radius:11px;margin-bottom:5px}
 .nr-dead{background:rgba(224,82,82,0.08);border:0.5px solid rgba(224,82,82,0.2)}
 .nr-saved{background:rgba(61,214,140,0.08);border:0.5px solid rgba(61,214,140,0.2)}
@@ -127,7 +129,7 @@ input:focus{border-color:rgba(212,168,67,0.5)}
 .death-content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:600px;padding:30px 24px;text-align:center}
 .death-round-lbl{font-size:11px;letter-spacing:4px;color:rgba(255,100,100,0.5);font-weight:700;margin-bottom:32px;text-transform:uppercase}
 .death-icon-wrap{position:relative;margin-bottom:28px}
-.death-av{font-size:90px;display:block;filter:grayscale(0.3) brightness(0.85);animation:deathPulse 3s ease-in-out infinite}
+.death-av{font-size:90px;display:block;filter:grayscale(1) brightness(0.85);animation:deathPulse 3s ease-in-out infinite}
 @keyframes deathPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.04);opacity:0.88}}
 .death-skull{position:absolute;bottom:-8px;right:-8px;font-size:32px;animation:skullFloat 2s ease-in-out infinite}
 @keyframes skullFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
@@ -156,21 +158,41 @@ input:focus{border-color:rgba(212,168,67,0.5)}
 /* SILENCED REVEAL */
 .silenced-reveal{background:rgba(80,160,200,0.06);border:1px solid rgba(80,160,200,0.2);border-radius:16px;padding:18px;margin-bottom:16px;text-align:center}
 
-    /* Mobile Enhancements */
-    input, button { font-size: 16px !important; }
-    .screen { padding: 12px; }
-    .death-icon-wrap { position: relative; display: flex; justify-content: center; align-items: center; margin: 20px 0; }
-    .death-skull { position: absolute; font-size: 40px; bottom: -10px; right: 30%; filter: drop-shadow(0 0 10px rgba(0,0,0,0.8)); }
-    .death-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--border2); display: inline-block; margin: 0 4px; }
-    .death-dot.active { background: var(--gold); transform: scale(1.2); }
-    .death-dot.done { background: var(--text3); }
-    
-    /* Ensure the app fits mobile screens well */
-    #app { min-height: 100vh; display: flex; flex-direction: column; }
-    .btn-primary, .btn-sec { padding: 14px; border-radius: 12px; }
+/* ====== NEW: SHOCK ANIMATION FOR SILENCED ====== */
+@keyframes shockAnim {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-8px) scale(0.98); }
+  50% { transform: translateX(8px) scale(1.02); }
+  75% { transform: translateX(-8px) scale(0.98); }
+  100% { transform: translateX(0); }
+}
+.shock {
+  animation: shockAnim 0.3s cubic-bezier(.36,.07,.19,.97) both !important;
+  background: rgba(224,82,82,0.3) !important;
+  color: #ff9999 !important;
+  border-color: var(--red) !important;
+}
+
+/* ====== NEW: PASS DEVICE ANIMATION ====== */
+@keyframes pulsePass {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* Mobile Enhancements */
+input, button { font-size: 16px !important; }
+.screen { padding: 12px; }
+.death-icon-wrap { position: relative; display: flex; justify-content: center; align-items: center; margin: 20px 0; }
+.death-skull { position: absolute; font-size: 40px; bottom: -10px; right: 30%; filter: drop-shadow(0 0 10px rgba(0,0,0,0.8)); }
+.death-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--border2); display: inline-block; margin: 0 4px; }
+.death-dot.active { background: var(--gold); transform: scale(1.2); }
+.death-dot.done { background: var(--text3); }
+#app { min-height: 100vh; display: flex; flex-direction: column; }
+.btn-primary, .btn-sec { padding: 14px; border-radius: 12px; }
 
 </style>
 
+<body>
 <div id="app">
 <div class="bg-glow g1"></div>
 <div class="bg-glow g2"></div>
@@ -253,6 +275,16 @@ input:focus{border-color:rgba(212,168,67,0.5)}
   <div id="deal-action"></div>
 </div>
 
+<!-- PASS DEVICE SCREEN (NEW) -->
+<div id="s-pass-device" class="screen">
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;">
+    <div id="pass-target-av" style="font-size:90px;margin-bottom:15px;animation: pulsePass 2s infinite">📱</div>
+    <div style="font-size:22px;font-weight:bold;margin-bottom:10px;color:var(--text2)">قم بتمرير الجهاز إلى</div>
+    <div id="pass-target-name" style="font-size:38px;color:var(--gold);font-weight:900;margin-bottom:40px;letter-spacing:1px"></div>
+    <button class="btn btn-gold" onclick="confirmPass()" style="padding:18px;font-size:20px;box-shadow:0 8px 24px rgba(212,168,67,0.3)">أنا <span id="pass-btn-name"></span> واستلمت الجهاز</button>
+  </div>
+</div>
+
 <!-- NIGHT -->
 <div id="s-night" class="screen">
   <div class="phase-hdr">
@@ -261,10 +293,10 @@ input:focus{border-color:rgba(212,168,67,0.5)}
     <div id="night-pill" class="phase-pill">الجولة 1</div>
   </div>
   <div class="scroll-area" id="night-turns" style="flex:1"></div>
-  <button class="btn btn-gold" id="btn-end-night" onclick="endNight()" style="margin-top:9px;opacity:0.6">☀️ انتهى الليل</button>
+  <button class="btn btn-gold" id="btn-end-night" onclick="endNight()" style="margin-top:9px;opacity:0.6" disabled>☀️ انتهى الليل</button>
 </div>
 
-<!-- DEATH SCREEN (يستخدم JS لعرض كل ميت) -->
+<!-- DEATH SCREEN -->
 <div id="s-death" class="screen">
   <div class="death-bg-blood"></div>
   <div class="death-bg-top"></div>
@@ -283,7 +315,27 @@ input:focus{border-color:rgba(212,168,67,0.5)}
     <div class="sec-lbl">اللاعبون</div>
     <div id="morning-players"></div>
   </div>
-  <button class="btn btn-gold" onclick="startVoting()">🗳️ بدأ التصويت</button>
+  <button id="btn-morning-next" class="btn btn-gold" onclick="goToDiscussionOrWin()">⏱️ وقت النقاش</button>
+</div>
+
+<!-- DISCUSSION SCREEN (NEW) -->
+<div id="s-discussion" class="screen">
+  <div class="phase-hdr">
+    <span class="phase-emoji">⏱️</span>
+    <div class="phase-title" style="color:var(--gold)">وقت النقاش</div>
+    <div class="phase-pill">تناقشوا لاكتشاف المافيا</div>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;">
+    <div class="glass" style="width:100%;text-align:center;padding:40px 20px;margin-bottom:20px;">
+        <div id="timer-display" style="font-size:72px;font-weight:900;letter-spacing:4px;color:var(--gold);font-variant-numeric:tabular-nums;">02:00</div>
+    </div>
+    <div style="display:flex;gap:12px;margin-bottom:30px;width:100%">
+        <button class="btn btn-ghost" style="flex:1;font-size:16px" onclick="adjustTimer(-30)">-30ث</button>
+        <button class="btn btn-ghost" style="flex:1;font-size:16px" onclick="adjustTimer(30)">+30ث</button>
+    </div>
+  </div>
+  <button class="btn btn-gold" id="btn-timer-toggle" onclick="toggleTimer()">▶ بدء المؤقت</button>
+  <button class="btn btn-red" onclick="endDiscussion()">⚖️ تخطي إلى التصويت</button>
 </div>
 
 <!-- VOTING -->
@@ -348,6 +400,10 @@ let G={
   silencedPlayer:-1,dealIdx:0,dealRevealed:false,votes:{},editingAvFor:-1,
   deathQueue:[],deathIdx:0,pendingMorning:null,
 };
+
+let timerInt;
+let timeLeft = 120;
+let timerRunning = false;
 
 function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
 function adjP(d){G.playerCount=Math.max(4,Math.min(20,G.playerCount+d));document.getElementById('pc-disp').textContent=G.playerCount;renderSetupRows()}
@@ -484,24 +540,55 @@ function startNight(){
   NIGHT_ORDER.forEach(role=>{const player=G.players.find(p=>p.role===role&&p.alive);if(player)queue.push({role,player})});
   G.night.queue=queue;G.night.turnIdx=0;
   document.getElementById('night-pill').textContent='الجولة '+G.round;
-  renderNight();go('s-night');
+  showPassDevice(); // يعرض شاشة التمرير أولاً
 }
+
+function showPassDevice() {
+    if(G.night.turnIdx >= G.night.queue.length) {
+        renderNight(); 
+        go('s-night');
+        return;
+    }
+    const turn = G.night.queue[G.night.turnIdx];
+    document.getElementById('pass-target-name').textContent = turn.player.name;
+    document.getElementById('pass-target-av').textContent = turn.player.avatar;
+    document.getElementById('pass-btn-name').textContent = turn.player.name;
+    go('s-pass-device');
+}
+
+function confirmPass() {
+    renderNight();
+    go('s-night');
+}
+
 function renderNight(){
-  const c=document.getElementById('night-turns');c.innerHTML='';
-  const q=G.night.queue;const cur=G.night.turnIdx;
-  q.forEach((turn,idx)=>{
-    const role=ROLES[turn.role];
-    const div=document.createElement('div');
-    div.className='turn-card '+(idx<cur?'done-turn':idx===cur?'active-turn':'pending-turn');
-    let actionHTML=idx===cur?buildAction(turn):idx<cur?'<div style="font-size:12px;color:var(--text3)">✓ انتهى</div>':'<div style="font-size:12px;color:var(--text3)">⏳ انتظار</div>';
-    div.innerHTML=`<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-      <div style="font-size:32px;width:44px;height:44px;border-radius:11px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center">${turn.player.avatar}</div>
-      <div><div style="font-size:20px;font-weight:900;color:${role.color}">${role.icon} ${role.name}</div>
-      <div style="font-size:13px;color:var(--text2)">${turn.player.name}</div></div></div>
-      <div id="act-${idx}">${actionHTML}</div>`;
-    c.appendChild(div);
-  });
-  if(cur>=q.length)document.getElementById('btn-end-night').style.opacity='1';
+  const c=document.getElementById('night-turns');
+  c.innerHTML='';
+  const q=G.night.queue;
+  const cur=G.night.turnIdx;
+  
+  if (cur >= q.length) {
+      c.innerHTML = '<div style="text-align:center;padding:50px 0;color:var(--text2);font-size:16px;">أنهى الجميع أدوارهم الليلة.</div>';
+      document.getElementById('btn-end-night').style.opacity='1';
+      document.getElementById('btn-end-night').disabled = false;
+      return;
+  }
+  
+  document.getElementById('btn-end-night').style.opacity='0.6';
+  document.getElementById('btn-end-night').disabled = true;
+
+  // إظهار دور اللاعب الحالي فقط للحفاظ على الخصوصية الكاملة
+  const turn = q[cur];
+  const role=ROLES[turn.role];
+  const div=document.createElement('div');
+  div.className='turn-card active-turn';
+  let actionHTML=buildAction(turn);
+  div.innerHTML=`<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+    <div style="font-size:32px;width:44px;height:44px;border-radius:11px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center">${turn.player.avatar}</div>
+    <div><div style="font-size:20px;font-weight:900;color:${role.color}">${role.icon} ${role.name}</div>
+    <div style="font-size:13px;color:var(--text2)">${turn.player.name}</div></div></div>
+    <div id="act-${cur}">${actionHTML}</div>`;
+  c.appendChild(div);
 }
 function buildAction(turn){
   const alive=G.players.filter(p=>p.alive);const others=alive.filter(p=>p!==turn.player);
@@ -577,18 +664,46 @@ function witchKillList(){
 function doWitchKill(idx){G.night.kills.push(idx);nextTurn()}
 function witchProtect(){const wi=G.players.findIndex(p=>p.role==='witch');G.night.saves.push(wi);nextTurn()}
 function showInTurn(html){document.getElementById('act-'+G.night.turnIdx).innerHTML=html}
-function nextTurn(){G.night.turnIdx++;renderNight();if(G.night.turnIdx>=G.night.queue.length)document.getElementById('btn-end-night').style.opacity='1'}
+
+function nextTurn(){
+  G.night.turnIdx++;
+  showPassDevice(); // استدعاء التمرير بين كل دور
+}
 
 // ===== DEATH SCREEN ENGINE =====
 function endNight(){
   const killed=new Set(G.night.kills);const saved=new Set(G.night.saves);
-  const deaths=[];const savedList=[];
+  let deaths=[];const savedList=[];
+  
   killed.forEach(i=>{
     if(!saved.has(i)&&G.players[i].alive){G.players[i].alive=false;deaths.push(i)}
     else if(saved.has(i)&&G.players[i].alive)savedList.push(i);
   });
-  const su=G.players.find(p=>p.role==='suicide'&&p.alive);
-  if(su&&su.suicideTarget<0){const others=G.players.filter(p=>p.alive&&p!==su);if(others.length)su.suicideTarget=G.players.indexOf(others[Math.floor(Math.random()*others.length)])}
+  
+  // نظام المنتحر الجديد: الشريكين يموتان سوياً
+  const su=G.players.find(p=>p.role==='suicide');
+  if(su && su.alive && su.suicideTarget<0){
+      const others=G.players.filter(p=>p.alive&&p!==su);
+      if(others.length) su.suicideTarget=G.players.indexOf(others[Math.floor(Math.random()*others.length)]);
+  }
+  
+  if(su) {
+      const suIdx = G.players.indexOf(su);
+      let suDied = deaths.includes(suIdx);
+      let tgtDied = deaths.includes(su.suicideTarget);
+      
+      if(suDied && su.suicideTarget >= 0) {
+          const tgt = su.suicideTarget;
+          if(G.players[tgt].alive && !deaths.includes(tgt)) {
+              G.players[tgt].alive = false;
+              deaths.push(tgt);
+          }
+      } else if (tgtDied && su.alive && !deaths.includes(suIdx)) {
+          su.alive = false;
+          deaths.push(suIdx);
+      }
+  }
+  
   G.deathQueue=deaths;
   G.pendingMorning={deaths,savedList};
   if(deaths.length>0){G.deathIdx=0;showDeathScreen()}
@@ -614,7 +729,7 @@ function showDeathScreen(){
     <div class="death-enter" style="width:100%; text-align:center;">
       <div class="death-round-lbl" style="color:var(--text3); font-size:12px; margin-bottom:15px;">🌙 الجولة ${G.round} — ${cur+1} من ${total}</div>
       <div class="death-icon-wrap">
-        <span style="font-size:80px; filter: grayscale(100%) opacity(0.6);">${p.avatar}</span>
+        <span style="font-size:80px; filter: grayscale(1) opacity(0.6);">${p.avatar}</span>
         <span class="death-skull">❓</span>
       </div>
       <div class="death-divider" style="height:1px; background:var(--border2); margin:20px auto; width:60%;"></div>
@@ -623,10 +738,9 @@ function showDeathScreen(){
       <div class="death-role" style="color:var(--text3); font-style:italic;">هويته مجهولة...</div>
       <div class="death-msg" style="color:var(--text3); opacity:0.6; margin-top:15px; font-size:13px;">"سرٌ آخر يُدفن تحت تراب المدينة"</div>
       ${total > 1 ? `<div class="death-counter" style="margin-top:25px">${dotsHTML}</div>` : ''}
-      <button class="btn-primary" style="margin-top:30px; width:100%;" onclick="${nextFn}">${nextLabel}</button>
+      <button class="btn-primary btn-gold" style="margin-top:30px; width:100%;" onclick="${nextFn}">${nextLabel}</button>
     </div>`;
 }
-
 
 function nextDeath(){
   G.deathIdx++;
@@ -649,7 +763,8 @@ function showQuietNight(savedList){
 
 function proceedToMorning(){
   const {deaths,savedList}=G.pendingMorning;
-  renderMorning(deaths,savedList);go('s-morning');
+  renderMorning(deaths,savedList);
+  go('s-morning');
 }
 
 
@@ -682,6 +797,78 @@ function renderMorning(deaths, saved){
           </div>`;
   });
   rc.innerHTML = h;
+
+  // التحقق التلقائي للنتيجة قبل بدء التصويت/النقاش
+  const w = checkWin();
+  const nBtn = document.getElementById('btn-morning-next');
+  if(w) {
+      nBtn.textContent = 'إعلان النتيجة 🏆';
+      nBtn.onclick = () => showWin(w);
+  } else {
+      nBtn.textContent = '⏱️ وقت النقاش';
+      nBtn.onclick = goToDiscussionOrWin;
+  }
+}
+
+function goToDiscussionOrWin() {
+    const w = checkWin();
+    if(w) showWin(w);
+    else startDiscussion();
+}
+
+// ===== DISCUSSION TIMER ENGINE =====
+function startDiscussion() {
+    timeLeft = 120;
+    timerRunning = false;
+    clearInterval(timerInt);
+    updateTimerDisplay();
+    const btn = document.getElementById('btn-timer-toggle');
+    btn.innerHTML = '▶ بدء المؤقت';
+    btn.className = 'btn btn-gold';
+    go('s-discussion');
+}
+
+function updateTimerDisplay() {
+    const m = Math.floor(timeLeft/60).toString().padStart(2,'0');
+    const s = (timeLeft%60).toString().padStart(2,'0');
+    document.getElementById('timer-display').textContent = `${m}:${s}`;
+}
+
+function adjustTimer(sec) {
+    timeLeft = Math.max(0, timeLeft + sec);
+    updateTimerDisplay();
+}
+
+function toggleTimer() {
+    const btn = document.getElementById('btn-timer-toggle');
+    if(timerRunning) {
+        clearInterval(timerInt);
+        timerRunning = false;
+        btn.innerHTML = '▶ استئناف';
+        btn.className = 'btn btn-outline';
+    } else {
+        if(timeLeft === 0) timeLeft = 120; // reset
+        timerRunning = true;
+        btn.innerHTML = '⏸ إيقاف مؤقت';
+        btn.className = 'btn btn-ghost';
+        timerInt = setInterval(() => {
+            timeLeft--;
+            if(timeLeft <= 0) {
+                timeLeft = 0;
+                clearInterval(timerInt);
+                timerRunning = false;
+                btn.innerHTML = '🔔 انتهى الوقت';
+                btn.className = 'btn btn-red';
+                if(navigator.vibrate) navigator.vibrate([300, 100, 300]);
+            }
+            updateTimerDisplay();
+        }, 1000);
+    }
+}
+
+function endDiscussion() {
+    clearInterval(timerInt);
+    startVoting();
 }
 
 
@@ -698,29 +885,56 @@ function renderVoting(){
   const vl=document.getElementById('vote-list');vl.innerHTML='';
   G.players.forEach((p,i)=>{
     if(!p.alive)return;const isSil=i===G.silencedPlayer;
-    const row=document.createElement('div');row.className='v-row';row.style.opacity=isSil?'0.38':'1';
+    const row=document.createElement('div');row.className='v-row';row.style.opacity=isSil?'0.5':'1';
+    // إضافة نظام الصدمة عند محاولة المُسكت التصويت بدلاً من مجرد التعطيل الصامت
     row.innerHTML=`<div class="p-av-sm">${p.avatar}</div>
     <span class="p-name" style="font-size:14px">${p.name}${isSil?'<span class="silenced-badge" style="margin-right:5px">🤫</span>':''}</span>
     <div class="v-ctrl">
-      <button class="v-b" onclick="adjV(${i},-1)" ${isSil?'disabled':''}>−</button>
+      <button class="v-b" id="vb-m-${i}" onclick="${isSil?`triggerShock('vb-m-${i}')`:`adjV(${i},-1)`}">−</button>
       <span class="v-num" id="vc${i}">0</span>
-      <button class="v-b" onclick="adjV(${i},1)" ${isSil?'disabled':''}>+</button>
+      <button class="v-b" id="vb-p-${i}" onclick="${isSil?`triggerShock('vb-p-${i}')`:`adjV(${i},1)`}">+</button>
     </div>`;
     vl.appendChild(row);
   });
 }
+
+function triggerShock(btnId) {
+    const btn = document.getElementById(btnId);
+    if(btn) {
+        btn.classList.remove('shock');
+        void btn.offsetWidth; // reset animation
+        btn.classList.add('shock');
+        if(navigator.vibrate) navigator.vibrate(200);
+    }
+}
+
 function adjV(i,d){G.votes[i]=Math.max(0,(G.votes[i]||0)+d);document.getElementById('vc'+i).textContent=G.votes[i]}
+
 function executeVote(){
   const entries=Object.entries(G.votes).filter(([,v])=>v>0);
   if(!entries.length){alert('لا أصوات!');return}
   entries.sort((a,b)=>b[1]-a[1]);
   if(entries.length>1&&entries[0][1]===entries[1][1]){alert('تعادل! أعيدوا التصويت.');return}
+  
   const ei=parseInt(entries[0][0]);const ex=G.players[ei];ex.alive=false;
   const extras=[];
-  const su=G.players.find(p=>p.role==='suicide'&&p!==ex&&p.alive);
-  if(su&&su.suicideTarget===ei){su.alive=false;extras.push(su)}
-  if(ex.role==='suicide'&&ex.suicideTarget>=0){const tgt=G.players[ex.suicideTarget];if(tgt&&tgt.alive){tgt.alive=false;extras.push(tgt)}}
-  // show execution death screen
+  
+  // تفعيل الميكانيكية المزدوجة للمنتحر أثناء الإعدام
+  const su=G.players.find(p=>p.role==='suicide');
+  if(su) {
+      if(su.alive && su !== ex && su.suicideTarget === ei) {
+          su.alive = false;
+          extras.push(su);
+      }
+      else if (ex === su && su.suicideTarget >= 0) {
+          const tgt = G.players[su.suicideTarget];
+          if(tgt && tgt.alive) {
+              tgt.alive = false;
+              extras.push(tgt);
+          }
+      }
+  }
+
   const deathList=[ei,...extras.map(p=>G.players.indexOf(p))];
   G.deathQueue=deathList;G.deathIdx=0;
   G.pendingMorning=null;
@@ -741,7 +955,7 @@ function showExecutionDeathScreen(){
     <div class="death-enter" style="width:100%; text-align:center;">
       <div class="death-round-lbl" style="color:var(--text3); font-size:12px; margin-bottom:15px;">⚖️ حكم الشعب — الجولة ${G.round}</div>
       <div class="death-icon-wrap">
-        <span style="font-size:80px; filter: grayscale(100%) opacity(0.6);">${p.avatar}</span>
+        <span style="font-size:80px; filter: grayscale(1) opacity(0.6);">${p.avatar}</span>
         <span class="death-skull">⚖️</span>
       </div>
       <div class="death-divider" style="height:1px; background:var(--border2); margin:20px auto; width:60%;"></div>
@@ -749,7 +963,7 @@ function showExecutionDeathScreen(){
       <div class="death-name" style="font-size:24px; margin:10px 0;">${p.name}</div>
       <div class="death-role" style="color:var(--text3); font-style:italic;">دُفن سره معه...</div>
       <div class="death-msg" style="color:var(--text3); opacity:0.6; margin-top:15px; font-size:13px;">"لن تعرفوا حقيقته إلا عند النهاية"</div>
-      <button class="btn-primary" style="margin-top:30px; width:100%;" onclick="${isLast?'afterExecution()':'nextExecutionDeath()'}">${isLast?'متابعة →':'التالي →'}</button>
+      <button class="btn-primary btn-gold" style="margin-top:30px; width:100%;" onclick="${isLast?'afterExecution()':'nextExecutionDeath()'}">${isLast?'متابعة →':'التالي →'}</button>
     </div>`;
 }
 
@@ -770,7 +984,7 @@ function showWin(w){
   if(w==='citizens'){document.getElementById('win-icon').textContent='🏆';document.getElementById('win-title').textContent='انتصر المواطنون!';document.getElementById('win-title').style.color='var(--green)';document.getElementById('win-sub').textContent='المافيا تم القضاء عليها'}
   else{document.getElementById('win-icon').textContent='🔪';document.getElementById('win-title').textContent='انتصرت المافيا!';document.getElementById('win-title').style.color='var(--red)';document.getElementById('win-sub').textContent='المافيا سيطرت على المدينة'}
   let h='';G.players.forEach((p,i)=>{const r=ROLES[p.role];
-    h+=`<div class="r-row"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:22px">${p.avatar}</span>
+    h+=`<div class="r-row"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:22px; filter:${p.alive?'none':'grayscale(1)'}">${p.avatar}</span>
     <span style="${p.alive?'':'text-decoration:line-through;color:var(--text3)'}">${p.name}</span></div>
     <span class="rb ${r.badge}">${r.icon} ${r.name}</span></div>`;
   });
@@ -779,4 +993,5 @@ function showWin(w){
 
 renderSetupRows();renderRolesInfoPage();
 </script>
-<html/>
+</body>
+</html>

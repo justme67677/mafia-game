@@ -1,0 +1,16 @@
+{
+  "name": "Mafia Game",
+  "short_name": "Mafia",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#07070f",
+  "theme_color": "#d4a843",
+  "description": "لعبة مافيا احترافية للجلسات الجماعية",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/771/771241.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
